@@ -1,6 +1,9 @@
 pipeline { 
   agent any
 
+  environment {
+    NEXUS = credentials('nexus')
+  }
   stages {
     stage ('Checkout Code') {
       steps {
@@ -9,18 +12,12 @@ pipeline {
     }
     stage ('Build app') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'gogs', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-          // available as an env variable, but will be masked if you try to print it out any which way
-          sh 'echo $PASSWORD'
-          // also available as a Groovy variable—note double quotes for string interpolation
-          echo "$USERNAME"
-        }
-        sh "echo echo 'Add build commands here'"
+        sh "echo 'Add build commands here'"
       }
     }
     stage('Nexus login') {
         steps {
-            sh 'sudo docker login localhost:5000 -u admin -p admin123'
+            sh "sudo docker login localhost:5000 -u ${NEXUS_USR} -p ${NEXUS_PSW}"
         }
     }
     stage('Docker build') {
