@@ -12,12 +12,12 @@ pipeline {
     }
     stage ('Build app') {
       steps {
-        sh "echo 'Add build commands here'"
+        sh "echo ${NEXUS_USR}"
       }
     }
     stage('Nexus login') {
         steps {
-            sh "sudo docker login localhost:5000 -u ${NEXUS_USR} -p ${NEXUS_PSW}"
+            sh "sudo docker login localhost:5000 -u $NEXUS_USR -p $NEXUS_PSW"
         }
     }
     stage('Docker build') {
