@@ -2,13 +2,14 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_PASS = credentials('dockerhub')
+    DOCKERHUB = credentials('dockerhub')
     GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
   }
   
   stages {
     stage ('Checkout Code') {
       steps {
+        sh "which git"
         checkout scm
       }
     }
@@ -25,14 +26,22 @@ pipeline {
     stage('Docker build') {
         steps {
             sh 'env'
-            sh "sudo docker build -t cueops/${env.JOB_NAME}:${env.GIT_BRANCH}-${env.BUILD_NUMBER} ."
+          sh "sudo docker build -t $DOCKERHUB_USR/${env.JOB_NAME}:${env.GIT_BRANCH}-${env.BUILD_NUMBER} ."
         }
     }
     stage('Docker push') {
         steps {
-            sh "sudo docker push cueops/${env.JOB_NAME}:${env.GIT_BRANCH}-${env.BUILD_NUMBER}"
-            sh "curl -k http://34.200.248.216/api/v1/webhooks/codecommit -d '{"name": ${env.JOB_NAME}, "build": { "branch":${env.GIT_BRANCH}, "number":${env.BUILD_NUMBER}, "status" :"SUCCESS"} }' -H 'Content-Type: application/json' -H 'st2-api-key: OGVhYWExZDU1NDg3NDZmZGMyOTY5MTgxMDNjNzNkNjEzZTFlY2E4YTIxNTViOWYwMmZhZWM1NTgwYTE0Zjc3YQ'"
+            sh 'env'
+            sh "sudo docker push $DOCKERHUB_USR/${env.JOB_NAME}:${env.GIT_BRANCH}-${env.BUILD_NUMBER}"
+          sh "curl -k http://${env.ST2_URL}/api/v1/webhooks/codecommit -d '{\"name\": \"${env.JOB_NAME}\", \"build\": {\"branch\": \"${env.GIT_BRANCH}\", \"status\": \"SUCCESS\", \"number\": \"${env.BUILD_ID}\"}}' -H 'Content-Type: application/json' -H 'st2-api-key: ${env.ST2_API_KEY}'"
+          sh "sudo docker rmi $DOCKERHUB_USR/${env.JOB_NAME}:${env.GIT_BRANCH}-${env.BUILD_NUMBER}"
         }
     }
+  }
+  post {
+        always {
+            echo 'Janitor Cleaning the workspace'
+            deleteDir() /* clean up our workspace */
+     }
   }
 }
