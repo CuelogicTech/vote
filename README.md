@@ -1,3 +1,2 @@
 # vote
 Voteapp sample repo
-
