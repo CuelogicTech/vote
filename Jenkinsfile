@@ -13,11 +13,11 @@ pipeline {
       }
     }
     
-    stage ('Checkout Code') {
-      steps {
-        checkout scm: [$class: 'GitSCM', extensions: [[$class: 'CheckoutOption', timeout: 120]]]
-      }
-    }
+//    stage ('Checkout Code') {
+//      steps {
+//        checkout scm: [$class: 'GitSCM', extensions: [[$class: 'CheckoutOption', timeout: 120]]]
+//      }
+//    }
     stage ('Build app') {
       steps {
         sh "echo Add build commands here"
