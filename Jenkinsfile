@@ -15,6 +15,7 @@ pipeline {
     
     stage ('Checkout Code') {
       steps {
+        scm.extenions = scm.extensions + [[$class: 'CloneOption', timeout: 30]]
         checkout scm
       }
     }
