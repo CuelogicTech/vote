@@ -15,7 +15,7 @@ pipeline {
     
     stage ('Checkout Code') {
       steps {
-        GIT_TRACE=1
+        sh "export GIT_TRACE=1"
         checkout scm
 //        sh "git config --global core.compression 0"
 //        checkout scm: [$class: 'GitSCM', extensions: [[$class: 'CheckoutOption', timeout: 240, shallow: true]]]
