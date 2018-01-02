@@ -20,6 +20,21 @@ pipeline {
 //        checkout scm: [$class: 'GitSCM', extensions: [[$class: 'CheckoutOption', timeout: 240, shallow: true]]]
 //      }
 //    }
+    stage('SonarQube analysis') {
+    // requires SonarQube Scanner 2.8+
+    def scannerHome = tool 'SonarQube Scanner 2.8';
+    withSonarQubeEnv('sonar-test') {
+      sh "${scannerHome}/bin/sonar-scanner"
+      }
+    }
+    stage("SonarQube Quality Gate") { 
+        timeout(time: 1, unit: 'HOURS') { 
+           def qg = waitForQualityGate() 
+           if (qg.status != 'OK') {
+             error "Pipeline aborted due to quality gate failure: ${qg.status}"
+           }
+        }
+    }
     stage ('Build app') {
       steps {
         sh "echo Add build commands here"
