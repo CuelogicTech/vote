@@ -12,25 +12,16 @@ pipeline {
         sh "curl -k http://${env.ST2_URL}/api/v1/webhooks/codecommit -d '{\"name\": \"${env.JOB_NAME}\", \"build\": {\"branch\": \"${env.GIT_BRANCH}\", \"phase\": \"STARTED\", \"number\": \"${env.BUILD_ID}\"}}' -H 'Content-Type: application/json' -H 'st2-api-key: ${env.ST2_API_KEY}'"
       }
     }
-
-    stage('SonarQube analysis') {
+    stage ('SonarQube analysis') {
       steps {
-    	def scannerHome = tool 'SonarQube Scanner 2.8';
-    	withSonarQubeEnv('sonar-test') {
-    	sh "${scannerHome}/bin/sonar-scanner"
-      }
-    }
-  } 
-    stage("SonarQube Quality Gate") { 
-      steps {
-        timeout(time: 1, unit: 'HOURS') { 
-        def qg = waitForQualityGate() 
-        if (qg.status != 'OK') {
-            error "Pipeline aborted due to quality gate failure: ${qg.status}"
-           }
+        script {
+            def scannerHome = tool 'SonarQube Scanner 2.8';
+               }
+        withSonarQubeEnv('sonar-test') {
+        sh "${scannerHome}/bin/sonar-scanner"
+            }
         }
     }
-}
     stage ('Build app') {
       steps {
         sh "echo Add build commands here"
