@@ -1,18 +1,3 @@
-curl --retry-delay 3 --retry 10 -v http://localhost:3000
-https://success.docker.com/article/Using_systemd_to_control_the_Docker_daemon
-
-db.fruit.insert( [ { type: "apple" }, { type: "Apple" }, { type: "APPLE" } ] )
-
-db.fruit.createIndex( { type: 1}, { collation: { locale: 'en', strength: 2 } } )
-
-use admin
-db.runCommand(
-{setFeatureCompatibilityVersion: "3.4"}
-)
-
-
-----------------------
-
 pipeline { 
   agent any
 
