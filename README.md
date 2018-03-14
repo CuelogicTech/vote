@@ -2,6 +2,3 @@
 Voteapp sample repo
 
 
-
-
-
