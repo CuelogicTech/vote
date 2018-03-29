@@ -22,7 +22,7 @@ pipeline {
 //    }
     stage ('Build app') {
       steps {
-        sh "echo ${env.PROJECT}"
+        echo "ProjectName: ${params.PROJECT_NAME}"
       }
     }
     stage('Dockerhub login') {
