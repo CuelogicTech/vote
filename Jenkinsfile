@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB = credentials("dockerhub")
+    DOCKERHUB = credentials("vote1-dockerhub")
 //    GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
   }
   
