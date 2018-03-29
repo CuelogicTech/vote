@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB = credentials("${env.PROJECT}1-dockerhub")
+    DOCKERHUB = credentials("dockerhub")
 //    GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
   }
   
@@ -22,7 +22,7 @@ pipeline {
 //    }
     stage ('Build app') {
       steps {
-        sh "echo Add build commands here"
+        sh "echo ${env.PROJECT}"
       }
     }
     stage('Dockerhub login') {
