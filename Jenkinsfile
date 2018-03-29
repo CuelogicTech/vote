@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    "${params.PROJECT_NAME}"DOCKERHUB = credentials("${env.PROJECT}1-dockerhub")
+    ${params.PROJECT_NAME}DOCKERHUB = credentials("${env.PROJECT}1-dockerhub")
 //    GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
   }
   
