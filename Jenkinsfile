@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    "${env.PROJECT}"-DOCKERHUB = credentials("${env.PROJECT}1-dockerhub")
+    ${params.PROJECT_NAME}_DOCKERHUB = credentials("${env.PROJECT}1-dockerhub")
 //    GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
   }
   
@@ -27,7 +27,7 @@ pipeline {
     }
     stage('Dockerhub login') {
         steps {
-            sh "sudo docker login -u ${env.PROJECT}-DOCKERHUB_USR -p ${env.PROJECT}-DOCKERHUB_PSW"
+            sh "sudo docker login -u ${params.PROJECT_NAME}_DOCKERHUB_USR -p ${params.PROJECT_NAME}_DOCKERHUB_PSW"
         }
     }
 //    stage('Docker build') {
