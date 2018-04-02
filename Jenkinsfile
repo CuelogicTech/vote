@@ -1,5 +1,7 @@
 pipeline { 
-  agent any
+  agent {
+      label 'jenkins-slave'
+  }
 
   environment {
     DOCKERHUB = credentials("${params.PROJECT_NAME}-dockerhub")
